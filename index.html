@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Raytracing Julia Fractals</title>
+    <link rel="stylesheet" href="src/styles/stylesApp.css">
+</head>
+<body>
+<div class="full-height">
+
+    <div class="nav_bar">
+
+        <div class="nav_tabs">
+            <a href="#" onclick="changeSettingsContent(0); return false;">Fractal</a>
+            <a href="#" onclick="changeSettingsContent(1); return false;">Camera</a>
+            <a href="#" onclick="changeSettingsContent(2); return false;">Render</a>
+            <a href="#" onclick="changeSettingsContent(3); return false;">Animation</a>
+            <a href="#" onclick="changeSettingsContent(4); return false;">Cut</a>
+            <a href="#" onclick="changeSettingsContent(5); return false;">4D</a>
+
+        </div>
+
+        <div class="nav_controls">
+            <div class="repo-link">
+                <a href="https://github.com/fhaselon/raytracing-julia-fractals" target="_blank">
+                    View Source on GitHub
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="main_cont">
+
+        <div class="left_col">
+            <div class="settings_container" id="settings_container">
+
+                <div class="setting_content">
+
+                    <div class="settings-title">Fractal Settings</div>
+                    <section class="settings-group">
+                        <div class="group-title">Fractal Color</div>
+
+                        <div class="form-row slider-block">
+                            <label class="form-label" for="FRCSliderR">Red</label>
+
+                            <div class="range-row">
+                                <input
+                                        oninput="this.closest('.range-row').querySelector('.value-pill').textContent = this.value;"
+                                        type="range"
+                                        step=0.01 min="0"
+                                        max="1" value="0.25"
+                                        class="slider"
+                                        id="FRCSliderR"
+                                />
+                                <span class="value-pill">0.25</span>
+                            </div>
+                        </div>
+
+                        <div class="form-row slider-block">
+                            <label class="form-label" for="FRCSliderG">Green</label>
+
+                            <div class="range-row">
+                                <input
+                                        oninput="this.closest('.range-row').querySelector('.value-pill').textContent = this.value;"
+                                        type="range"
+                                        step=0.01 min="0"
+                                        max="1" value="0.25"
+                                        class="slider"
+                                        id="FRCSliderG"
+                                />
+                                <span class="value-pill">0.25</span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-row slider-block">
+                            <label class="form-label" for="FRCSliderB">Blue</label>
+
+                            <div class="range-row">
+                                <input
+                                        oninput="this.closest('.range-row').querySelector('.value-pill').textContent = this.value;"
+                                        type="range"
+                                        step=0.01 min="0"
+                                        max="1" value="0.45"
+                                        class="slider"
+                                        id="FRCSliderB"
+                                />
+                                <span class="value-pill">0.45</span>
+                            </div>
+                        </div>
+
+
+                    </section>
+
+
+                    <section class="settings-group">
+                        <div class="group-title">Preset MUs :</div>
+                        <div class="form-info">μ (mu) is the constant quaternion parameter of the Julia function that
+                            defines the shape and structure of the fractal.
+                        </div>
+                        <div id="MUPreSL" class="custom-select" style="width:200px;">
+                            <select id="MUPreSLSL">
+                                <option value="0">Version1</option>
+                                <option value="0">Version1</option>
+                                <option value="1">Version2</option>
+                                <option value="2">Version3</option>
+                                <option value="3">Version4</option>
+                            </select>
+                        </div>
+
+                    </section>
+
+                    <section class="settings-group">
+                        <div class="group-title">Custom MUs :</div>
+
+                        <div class="form-row">
+                            <label class="form-label" for="mu1">R</label>
+                            <div class="form-control">
+                                <input id="mu1" type=number step=0.01 min=-10 max=10 value="-0.5"/>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label" for="mu2">I</label>
+                            <div class="form-control">
+                                <input id="mu2" type=number step=0.01 min=-10 max=10 value="-0.5"/>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label" for="mu3">J</label>
+                            <div class="form-control">
+                                <input id="mu3" type=number step=0.01 min=-10 max=10 value="-0.5"/>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label" for="mu4">K</label>
+                            <div class="form-control">
+                                <input id="mu4" type=number step=0.01 min=-10 max=10 value="0.0"/>
+                            </div>
+                        </div>
+
+
+                        <button id="BTNupdateSettings" class="SmallBTN">Update MU</button>
+
+                    </section>
+
+
+                    <section class="settings-group">
+                        <div class="group-title">rayOrigin W:</div>
+                        <div class="form-info">Selects the 4D slice currently projected into 3D space.</div>
+
+                        <input oninput="this.labels[0].innerHTML = this.value;" type="range" step=0.01
+                               min="-2" max="2" value="0.0" class="slider" id="rOWSL"><label
+                            for="rOWSL">0.0</label>
+
+
+                    </section>
+
+
+                    <section class="settings-group">
+                        <div class="group-title">Select Fractal</div>
+                        <div class="custom-select" style="width:200px;">
+                            <select id="FractalSL">
+                                <option value="0">Squared Jul</option>
+                                <option value="0">Squared Jul</option>
+                                <option value="1">Qubic Jul</option>
+
+                            </select>
+                        </div>
+
+
+                    </section>
+
+
+                    <section class="settings-group">
+                        <div class="group-title">Select Quat vs CQuat</div>
+
+                        <div class="custom-select" style="width:200px;">
+                            <select id="QautCquatSL">
+                                <option value="1">Quat</option>
+                                <option value="1">Quat</option>
+                                <option value="0">CQuat</option>
+                            </select>
+                        </div>
+
+
+                    </section>
+
+
+                </div>
+
+
+                <div class="setting_content">
+                    <div class="settings-title">Camera Settings</div>
+
+
+                    <section class="settings-group">
+                        <div class="group-title">Canvas</div>
+
+
+                        <div class="form-row slider-block">
+                            <label class="form-label" for="canvSizeRange">Height (px)</label>
+
+                            <div class="range-row">
+                                <input
+                                        oninput="this.closest('.range-row').querySelector('.value-pill').textContent = this.value;"
+                                        type="range"
+                                        min="100"
+                                        max="2000"
+                                        value="600"
+                                        class="slider"
+                                        id="canvSizeRange"
+                                />
+                                <span class="value-pill">600</span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-row">
+                            <label class="form-label" for="BGColorSL">Background</label>
+                            <div class="form-control">
+                                <div class="custom-select" style="width: 100%;">
+                                    <select id="BGColorSL">
+                                        <option value="0">Radial</option>
+                                        <option value="0">Radial</option>
+                                        <option value="1">White</option>
+                                        <option value="2">Black</option>
+                                        <option value="3">Distance Function</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+
+                    <section class="settings-group">
+                        <div class="group-title">Lighting</div>
+
+                        <div class="form-row">
+                            <label class="form-label" for="LightFolCam">Light follows camera</label>
+                            <div class="form-control">
+
+                                <label class="switch">
+                                    <input id="LightFolCam" type="checkbox" checked>
+                                    <span class="switch-track"></span>
+                                    <span class="switch-label"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <label class="form-label" for="shadowsCB">Compute shadows</label>
+                            <div class="form-control">
+
+                                <label class="switch">
+                                    <input id="shadowsCB" type="checkbox">
+                                    <span class="switch-track"></span>
+                                    <span class="switch-label"></span>
+                                </label>
+                            </div>
+                        </div>
+
+
+                    </section>
+
+
+
+                    <section class="settings-group">
+                        <div class="group-title">Camera</div>
+
+                        <div class="form-row">
+                            <label class="form-label" for="CamFOV">Field of View</label>
+                            <div class="form-control">
+                                <input id="CamFOV" class="num" type="number" step="1" min="10" max="200" value="90"/>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <label class="form-label" for="SuperSamplingIP">Supersampling</label>
+                            <div class="form-control">
+                                <input id="SuperSamplingIP" class="num" type="number" step="1" min="1" max="10"
+                                       value="1"/>
+                            </div>
+                        </div>
+
+
+                        <div class="form-row slider-block">
+                            <label class="form-label" for="canvAspectRange">Aspect Ratio</label>
+
+                            <div class="range-row">
+                                <input
+                                        oninput="this.closest('.range-row').querySelector('.value-pill').textContent = this.value;"
+                                        type="range"
+                                        min="1"
+                                        max="2"
+                                        value="1"
+                                        step="0.01"
+                                        class="slider"
+                                        id="canvAspectRange"
+                                />
+                                <span class="value-pill">1</span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-actions">
+                            <button class="SmallBTN" id="BTNupdateCamSettings">Update Camera Settings</button>
+                        </div>
+                    </section>
+                </div>
+
+
+                <div class="setting_content">
+                    <div class="settings-title">Render Settings</div>
+                    <section class="settings-group">
+
+                        <div class="group-title">Max Iterations (max 1024)</div>
+                        <div class="form-info">The maximum iteration values control the computational depth of the
+                            algorithm and directly influence rendering quality and performance.
+                        </div>
+                        <div class="form-row">
+                            <label class="form-label" for="InputIterInter">Max Julia Iteration</label>
+                            <div class="form-control">
+                                <input id="InputIterInter" type=number step=1 min=1 max=1024 value="50"/>
+                            </div>
+                            <div class="form-info">Defines how many iterations are used to evaluate the Julia sequence,
+                                affecting fractal detail and structural accuracy.
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <label class="form-label" for="InputIterNorm">Max Normal Iteration</label>
+                            <div class="form-control">
+                                <input id="InputIterNorm" type=number step=1 min=1 max=1024 value="50"/>
+                            </div>
+                            <div class="form-info">Controls the iteration depth used when estimating surface normals,
+                                influencing shading precision and visual smoothness.
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+
+                            <label class="form-label" for="InputIterJulia">Max Sphere Iteration</label>
+                            <div class="form-control">
+                                <input id="InputIterJulia" type=number step=1 min=1 max=1024 value="50"/>
+                            </div>
+                            <div class="form-info">Sets the maximum number of ray-marching steps, determining
+                                intersection accuracy and surface sharpness.
+                            </div>
+                        </div>
+
+
+                        <button class="SmallBTN" id="BTNupdateIterationSettings">Update Iteration Depth</button>
+
+
+                    </section>
+
+                    <section class="settings-group">
+                        <div class="group-title">Normal Calculation</div>
+
+                        <div class="custom-select" style="width:200px;">
+                            <select id="NormCalcSL">
+                                <option value="2">V3 - da Silva et al. 2021 </option>
+                                <option value="0">V1 - Crane 2005</option>
+                                <option value="1">V2 - Quilez 2001</option>
+                                <option value="2">V3 - da Silva et al. 2021</option>
+                            </select>
+                        </div>
+                        <div class="form-info">For a definition of the different types, see documentation.</div>
+
+                    </section>
+
+                </div>
+
+
+                <div class="setting_content">
+                    <div class="settings-title">Animation</div>
+                    <section class="settings-group">
+                        <div class="group-title">Start Stop Animation</div>
+                        <label class="switch">
+                            <input id="ShowAnimation" type="checkbox">
+                            <span class="switch-track"></span>
+                            <span class="switch-label">Play Animation</span>
+                        </label>
+
+                    </section>
+
+                    <section class="settings-group">
+                        <div class="group-title">Settings</div>
+                        <div class="form-info">What parts of the quaternion should be manipulated?</div>
+                        <div class="form-row">
+                            <label class="form-label" for="ani_ch_r">R</label>
+                            <div class="form-control">
+                                <label class="switch">
+                                    <input id="ani_ch_r" type="checkbox" checked>
+                                    <span class="switch-track"></span>
+                                    <span class="switch-label"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <label class="form-label" for="ani_ch_i">I</label>
+                            <div class="form-control">
+                                <label class="switch">
+                                    <input id="ani_ch_i" type="checkbox" checked>
+                                    <span class="switch-track"></span>
+                                    <span class="switch-label"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <label class="form-label" for="ani_ch_j">J</label>
+                            <div class="form-control">
+                                <label class="switch">
+                                    <input id="ani_ch_j" type="checkbox" checked>
+                                    <span class="switch-track"></span>
+                                    <span class="switch-label"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <label class="form-label" for="ani_ch_k">K</label>
+                            <div class="form-control">
+                                <label class="switch">
+                                    <input id="ani_ch_k" type="checkbox" checked>
+                                    <span class="switch-track"></span>
+                                    <span class="switch-label"></span>
+                                </label>
+                            </div>
+                        </div>
+
+
+                    </section>
+
+
+                </div>
+
+
+                <div class="setting_content">
+                    <div class="settings-title">Cutting Plane</div>
+                    <section class="settings-group">
+                        <div class="group-title">activate cutting plane</div>
+                        <div class="form-info">Only works with 3D camera.</div>
+                        <label class="switch">
+                            <input id="CutZCB" type="checkbox">
+                            <span class="switch-track"></span>
+                            <span class="switch-label">Show Cutting Plane</span>
+                        </label>
+
+                    </section>
+                    <section class="settings-group">
+                        <div class="group-title">Z Position of cutting plane</div>
+                        <p>
+                            <br><input oninput="this.labels[0].innerHTML = this.value;" step=0.01 type="range" min="-1"
+                                       max="1" value="0.01" class="slider" id="CutZRange"><label
+                                for="CutZRange">0.01</label></p>
+                    </section>
+
+                </div>
+
+                <div class="setting_content">
+
+                    <div class="settings-title">4D Camera</div>
+                    <section class="settings-group">
+                        <div class="group-title">activate 4d camera</div>
+
+                        <label class="switch">
+                            <input id="4dCamCB" type="checkbox">
+                            <span class="switch-track"></span>
+                            <span class="switch-label">Use 4D camera</span>
+                        </label>
+
+
+                        <div class="form-info">The 4D camera is controlled by look-from, look-at, and up vectors in 4D
+                            space. The limbo vector defines the additional orientation in the fourth dimension and
+                            determines how the 4D fractal is projected into 3D.
+                        </div>
+
+                    </section>
+
+
+                    <section class="settings-group">
+                        <div class="group-title">look at vector</div>
+                        <input oninput="this.labels[0].innerHTML = this.value;" step=0.01 type="range" min="-5" max="5"
+                               value="0.0" class="slider" id="4dLAX"><label for="4dLAX">0.0</label>
+                        <input oninput="this.labels[0].innerHTML = this.value;" step=0.01 type="range" min="-5" max="5"
+                               value="0.0" class="slider" id="4dLAY"><label for="4dLAY">0.0</label>
+                        <input oninput="this.labels[0].innerHTML = this.value;" step=0.01 type="range" min="-5" max="5"
+                               value="0.0" class="slider" id="4dLAZ"><label for="4dLAZ">0.0</label>
+                        <input oninput="this.labels[0].innerHTML = this.value;" step=0.01 type="range" min="-5" max="5"
+                               value="0.0" class="slider" id="4dLAW"><label for="4dLAW">0.0</label>
+                    </section>
+                    <section class="settings-group">
+                        <div class="group-title">look from vector</div>
+                        <input oninput="this.labels[0].innerHTML = this.value;" step=0.01 type="range" min="-5" max="5"
+                               value="0.0" class="slider" id="4dLFX"><label for="4dLFX">0.0</label>
+                        <input oninput="this.labels[0].innerHTML = this.value;" step=0.01 type="range" min="-5" max="5"
+                               value="3.0" class="slider" id="4dLFY"><label for="4dLFY">3.0</label>
+                        <input oninput="this.labels[0].innerHTML = this.value;" step=0.01 type="range" min="-5" max="5"
+                               value="0.0" class="slider" id="4dLFZ"><label for="4dLFZ">0.0</label>
+                        <input oninput="this.labels[0].innerHTML = this.value;" step=0.01 type="range" min="-5" max="5"
+                               value="0.0" class="slider" id="4dLFW"><label for="4dLFW">0.0</label>
+                    </section>
+                    <section class="settings-group">
+                        <div class="group-title">VUP vector</div>
+                        <input oninput="this.labels[0].innerHTML = this.value;" step=0.01 type="range" min="-5" max="5"
+                               value="0.0" class="slider" id="4dUPX"><label for="4dUPX">0.0</label>
+                        <input oninput="this.labels[0].innerHTML = this.value;" step=0.01 type="range" min="-5" max="5"
+                               value="0.0" class="slider" id="4dUPY"><label for="4dUPY">0.0</label>
+                        <input oninput="this.labels[0].innerHTML = this.value;" step=0.01 type="range" min="-5" max="5"
+                               value="1.0" class="slider" id="4dUPZ"><label for="4dUPZ">1.0</label>
+                        <input oninput="this.labels[0].innerHTML = this.value;" step=0.01 type="range" min="-5" max="5"
+                               value="0.0" class="slider" id="4dUPW"><label for="4dUPW">0.0</label>
+                    </section>
+                    <section class="settings-group">
+                        <div class="group-title">limbo vector</div>
+                        <input oninput="this.labels[0].innerHTML = this.value;" step=0.01 type="range" min="-5" max="5"
+                               value="0.0" class="slider" id="4dLIMX"><label for="4dLIMX">0.0</label>
+                        <input oninput="this.labels[0].innerHTML = this.value;" step=0.01 type="range" min="-5" max="5"
+                               value="0.0" class="slider" id="4dLIMY"><label for="4dLIMY">0.0</label>
+                        <input oninput="this.labels[0].innerHTML = this.value;" step=0.01 type="range" min="-5" max="5"
+                               value="0.0" class="slider" id="4dLIMZ"><label for="4dLIMZ">0.0</label>
+                        <input oninput="this.labels[0].innerHTML = this.value;" step=0.01 type="range" min="-5" max="5"
+                               value="1.0" class="slider" id="4dLIMW"><label for="4dLIMW">1.0</label>
+                    </section>
+
+
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="right_col">
+            <div class="HQ-overlay"><label class="switch" style="box-shadow:0 0 25px rgba(125, 211, 252, 0.25);">
+                <input id="ItersCB" type="checkbox">
+                <span class="switch-track"></span>
+                <span class="switch-label">Show High Quality (use Render Settings)</span>
+            </label></div>
+
+            <div class="render-overlay" id="renderOverlay">
+                <button class="overlay-toggle" id="overlayToggle" type="button">
+                    <span>Information</span>
+                    <span class="overlay-chev" id="overlayChev">▾</span>
+                </button>
+
+                <div class="overlay-body" id="overlayBody">
+                    <div class="kv">
+                        <div class="k">FPS</div>
+                        <div class="v" id="infoFps">—</div>
+                        <div class="k">Render Time (ms)</div>
+                        <div class="v" id="infoTime">—</div>
+                        <div class="k">Render Time CPU (ms)</div>
+                        <div class="v" id="infoTimeCPU">—</div>
+
+                        <div class="k">Max Iter Julia</div>
+                        <div class="v" id="infoMaxInterInter">—</div>
+                        <div class="k">Max Iter Normals</div>
+                        <div class="v" id="infoIterNorm">—</div>
+                        <div class="k">Max Iter Sphere Tracing</div>
+                        <div class="v" id="infoIterJulia">—</div>
+                        <div class="k">MU</div>
+                        <div class="v" id="infoMu">—</div>
+                        <div class="k">Supersampling</div>
+                        <div class="v" id="infoSuperSam">—</div>
+
+                    </div>
+                    <div class="overlay-hint" id="infoHint">Updates on each frame.</div>
+                </div>
+            </div>
+            <div class="canvas_cont">
+                <canvas id="gl-surface">
+                    Get a <a href="http://chrome.google.com">more recent</a> browser
+                </canvas>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div id="debugFooter" class="debug_bar" style="position: fixed; bottom: 0; left: 0; right: 0;"> Debug Info:
+        <div class="topbar_content" id="debug_content" style="display:inline; color: white;"> degubcontent</div>
+    </div>
+
+
+</div>
+
+
+<script type="module" src="./src/main.js"></script>
+<script src="src/ui/setupMenu.js"></script>
+
+
+</body>
+
+<script>
+    // changes the content of the currently selected settings menu
+    function changeSettingsContent(index) {
+        settings = document.getElementById("settings_container").children;
+
+        for (let i = 0; i < settings.length; i++) {
+            settings[i].style.display = "none";
+        }
+        settings[index].style.display = "block";
+
+        const tabs = document.querySelectorAll(".nav_tabs a");
+
+        tabs.forEach((tab, i) => {
+            if (i === index) {
+                tab.classList.add("active");
+            } else {
+                tab.classList.remove("active");
+            }
+        });
+
+
+    }
+
+    changeSettingsContent(0);
+    (function () {
+        const overlay = document.getElementById("renderOverlay");
+        const btn = document.getElementById("overlayToggle");
+
+        btn.addEventListener("click", () => {
+            overlay.classList.toggle("open");
+        });
+        btn.click()
+    })();
+
+</script>
+
+
+</html>
