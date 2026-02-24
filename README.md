@@ -18,6 +18,10 @@ The core contribution of this project is the GLSL fragment shader implementation
 
 The web application acts as an interactive frontend to explore the shader.
 
+It can be accessed here:
+
+https://fhaselon.github.io/raytracing-julia-fractals/
+
 ## Technical Overview
 
 ### Quaternion Julia Set
